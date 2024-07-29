@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PeriodeResource\Pages;
-use App\Filament\Resources\PeriodeResource\RelationManagers;
-use App\Models\Periode;
+use stdClass;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
+use App\Models\Periode;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PeriodeResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PeriodeResource\RelationManagers;
 
 class PeriodeResource extends Resource
 {
@@ -35,6 +37,16 @@ class PeriodeResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 TextColumn::make('name')
                     ->label('Name Periode')
             ])

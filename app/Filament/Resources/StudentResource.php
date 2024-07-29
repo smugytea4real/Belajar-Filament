@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use stdClass;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Student;
 use Filament\Forms\Form;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,6 +67,16 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 TextColumn::make('nis')
                     ->label('NIS'),
                 TextColumn::make('name')
@@ -104,5 +116,16 @@ class StudentResource extends Resource
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        
+        if ($locale == 'id') {
+            return 'Murid';
+        } else {
+            return 'Student';
+        }
     }
 }
