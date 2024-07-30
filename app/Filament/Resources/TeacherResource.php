@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\TeacherResource\RelationManagers\ClassroomRelationManager;
 use stdClass;
 use Filament\Forms;
 use Filament\Tables;
@@ -41,8 +42,7 @@ class TeacherResource extends Resource
                         Textarea::make('address'),
                         FileUpload::make('profile')
                             ->directory('teachers')
-                ])->columns(2),
-
+                    ])->columns(2),
             ]);
     }
 
@@ -82,7 +82,7 @@ class TeacherResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ClassroomRelationManager::class,
         ];
     }
 

@@ -121,7 +121,7 @@ class StudentResource extends Resource
     public static function getLabel(): ?string
     {
         $locale = app()->getLocale();
-        
+
         if ($locale == 'id') {
             return 'Murid';
         } else {
