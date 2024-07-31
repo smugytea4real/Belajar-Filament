@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('student_has_classes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('teachers_id');
-            $table->unsignedBigInteger('home_rooms_id');
+            $table->unsignedBigInteger('students_id');
+            $table->unsignedBigInteger('homerooms_id');
             $table->unsignedBigInteger('periodes_id');
             $table->boolean('is_open')->default(1);
 
-            $table->foreign('teachers_id')->references('id')->on('teachers')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('home_rooms_id')->references('id')->on('home_rooms')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('students_id')->references('id')->on('students')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('homerooms_id')->references('id')->on('home_rooms')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('periodes_id')->references('id')->on('periodes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
