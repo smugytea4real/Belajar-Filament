@@ -12,7 +12,7 @@ class HomeRoom extends Model
     protected $guarded = [];
 
     public function teacher(){
-        return $this->belongsTo(Teacher::class, 'teacher_id', 'id');
+        return $this->belongsTo(Teacher::class, 'teachers_id', 'id');
     }
 
     public function classroom(){

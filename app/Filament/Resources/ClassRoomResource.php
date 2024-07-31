@@ -31,7 +31,7 @@ class ClassRoomResource extends Resource
             ->schema([
                 Card::make([
                     TextInput::make('name')
-                        ->live()
+                        ->reactive()
                         ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', \Str::slug($state))),
                     TextInput::make('slug')
                 ])
