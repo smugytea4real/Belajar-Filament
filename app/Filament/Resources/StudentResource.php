@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Tables\Filters\SelectFilter;
 use stdClass;
 use Filament\Forms;
 use Filament\Tables;
@@ -88,16 +89,26 @@ class StudentResource extends Resource
                     ->label('Name Student'),
                 TextColumn::make('gender'),
                 TextColumn::make('birthday')
-                    ->label('Birthday'),
+                    ->label('Birthday')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('religion')
-                    ->label('Religion'),
+                    ->label('Religion')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('contact'),
                 ImageColumn::make('profile'),
                 TextColumn::make('status')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->formatStateUsing(fn (string $state): string => ucwords("{$state}"))
-        ])
+            ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options([
+                        'accept' => 'Accept',
+                        'off' => 'Off',
+                        'move' => 'Move',
+                        'grade' => 'Grade',
+                    ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -105,24 +116,22 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
             Tables\Actions\BulkActionGroup::make([
-                BulkAction::make('Accept')
+                BulkAction::make('Change Status')
                     ->icon('heroicon-m-check')
                     ->requiresConfirmation()
-                    ->action(function ($records) { // Removed the type hint
-                        $records->each(function ($record) {
-                            $record->update(['status' => 'accept']);
-                        });
-                    }),
-                BulkAction::make('Off')
-                    ->icon('heroicon-m-x-circle')
-                    ->requiresConfirmation()
-                    ->action(function ($records) { // Removed the type hint
-                        $records->each(function ($record) {
-                            $record->update(['status' => 'off']);
+                    ->form([
+                        Select::make('status')
+                            ->label('Status')
+                            ->options(['accept' => 'Accept', 'off' => 'Off', 'move' => 'Move', 'grade' => 'Grade'])
+                            ->required(),
+                    ])
+                    ->action(function ($records, array $data) { 
+                        $records->each(function($record) use ($data) {
+                        $record->update(['status' => $data['status']]);
                         });
                     }),
                     Tables\Actions\DeleteBulkAction::make(),
-                ])
+                ]),
             
             ])
             // ->headerActions([
