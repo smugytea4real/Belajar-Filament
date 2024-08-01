@@ -45,6 +45,10 @@ class ListStudents extends ListRecords
             ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'accept')),
         'off' => Tab::make()
             ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'off')),
+        'move' => Tab::make()
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'move')),
+        'grade' => Tab::make()
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'grade')),
     ];
 }
 }
