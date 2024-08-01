@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Infolists\Components\TextEntry;
 use stdClass;
 use Filament\Forms;
 use Filament\Tables;
@@ -13,6 +12,8 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Collection;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
@@ -20,9 +21,11 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\TextEntry;
 use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StudentResource\RelationManagers;
+
 
 class StudentResource extends Resource
 {
@@ -89,7 +92,9 @@ class StudentResource extends Resource
                 TextColumn::make('religion')
                     ->label('Religion'),
                 TextColumn::make('contact'),
-                ImageColumn::make('profile')
+                ImageColumn::make('profile'),
+                TextColumn::make('status')
+                    ->formatStateUsing(fn (string $state): string => ucwords("{$state}"))
         ])
             ->filters([
                 //
@@ -99,7 +104,23 @@ class StudentResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+            Tables\Actions\BulkActionGroup::make([
+                BulkAction::make('Accept')
+                    ->icon('heroicon-m-check')
+                    ->requiresConfirmation()
+                    ->action(function ($records) { // Removed the type hint
+                        $records->each(function ($record) {
+                            $record->update(['status' => 'accept']);
+                        });
+                    }),
+                BulkAction::make('Off')
+                    ->icon('heroicon-m-x-circle')
+                    ->requiresConfirmation()
+                    ->action(function ($records) { // Removed the type hint
+                        $records->each(function ($record) {
+                            $record->update(['status' => 'off']);
+                        });
+                    }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ])
             
