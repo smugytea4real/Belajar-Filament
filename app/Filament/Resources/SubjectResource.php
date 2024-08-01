@@ -2,16 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SubjectResource\Pages;
-use App\Filament\Resources\SubjectResource\RelationManagers;
-use App\Models\Subject;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Subject;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Hidden;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\SubjectResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\SubjectResource\RelationManagers;
 
 class SubjectResource extends Resource
 {
@@ -27,7 +34,21 @@ class SubjectResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Card::make()
+                    ->schema([
+                        TextInput::make('kode'),
+                        TextInput::make('name')
+                            ->label('Subject')
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                if (($get('slug') ?? '') !== Str::slug($old)) {
+                                    return;
+                                }
+
+                                $set('slug', Str::slug($state));
+                            }),
+                        Hidden::make('slug')
+                    ])->columns(2)
             ]);
     }
 
@@ -35,7 +56,9 @@ class SubjectResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('kode'),
+                TextColumn::make('name'),
+                TextColumn::make('slug')
             ])
             ->filters([
                 //
@@ -47,6 +70,9 @@ class SubjectResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
             ]);
     }
 

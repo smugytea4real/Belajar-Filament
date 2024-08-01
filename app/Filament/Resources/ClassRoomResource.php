@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ClassroomResource\RelationManagers\SubjectsRelationManager;
 use stdClass;
 use Filament\Forms;
 use Filament\Tables;
@@ -75,7 +76,7 @@ class ClassRoomResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SubjectsRelationManager::class
         ];
     }
 
