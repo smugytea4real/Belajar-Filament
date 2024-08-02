@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\ClassRoomResource;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -12,6 +13,7 @@ use Filament\Support\Colors\Color;
 use SebastianBergmann\Type\VoidType;
 use Filament\Navigation\UserMenuItem;
 use Filament\Navigation\NavigationItem;
+use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Navigation\NavigationBuilder;
@@ -94,12 +96,13 @@ class AdminPanelProvider extends PanelProvider
                     NavigationGroup::make('Source')
                         ->items([
                             ...CategoryNilaiResource::getNavigationItems(),
-                            ...StudentResource::getNavigationItems(),
+                            ...ClassRoomResource::getNavigationItems(),
                             ...DepartmentResource::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Setting')
                         ->items([
                             ...PeriodeResource::getNavigationItems(),
+                            ...UserResource::getNavigationItems(),
                             NavigationItem::make('Roles')
                                 ->icon('heroicon-o-shield-exclamation')
                                 ->isActiveWhen(fn (): bool => request()->routeIs([
