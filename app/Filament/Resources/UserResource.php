@@ -83,4 +83,13 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $admins = User::whereHas('roles', function ($query) {
+            $query->where('name', 'admin');
+        })->get()->pluck('id');
+        return parent::getEloquentQuery()
+            ->whereNotIn('id', $admins);
+    }
 }
