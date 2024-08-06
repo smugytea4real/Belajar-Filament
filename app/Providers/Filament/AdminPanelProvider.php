@@ -2,7 +2,8 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Resources\ClassRoomResource;
+use App\Filament\Resources\ClassroomResource;
+use App\Filament\Resources\StudentHasClassResource;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -91,12 +92,13 @@ class AdminPanelProvider extends PanelProvider
                         ->items([
                             ...StudentResource::getNavigationItems(),
                             ...TeacherResource::getNavigationItems(),
+                            ...StudentHasClassResource::getNavigationItems(),
                             ...SubjectResource::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Source')
                         ->items([
                             ...CategoryNilaiResource::getNavigationItems(),
-                            ...ClassRoomResource::getNavigationItems(),
+                            ...ClassroomResource::getNavigationItems(),
                             ...DepartmentResource::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Setting')

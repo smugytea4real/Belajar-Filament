@@ -16,11 +16,11 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\ClassRoomResource\Pages;
+use App\Filament\Resources\ClassroomResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ClassRoomResource\RelationManagers;
+use App\Filament\Resources\ClassroomResource\RelationManagers;
 
-class ClassRoomResource extends Resource
+class ClassroomResource extends Resource
 {
     protected static ?string $model = ClassRoom::class;
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\Classroom;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Periode;
@@ -9,6 +10,7 @@ use App\Models\Student;
 use App\Models\HomeRoom;
 use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use App\Models\StudentHasClass;
 use Filament\Resources\Resource;
@@ -39,9 +41,9 @@ class StudentHasClassResource extends Resource
                             ->searchable()
                             ->options(Student::all()->pluck('name', 'id'))
                             ->label('Student'),
-                        Select::make('homerooms_id')
+                        Select::make('classrooms_id')
                             ->searchable()
-                            ->options(HomeRoom::all()->pluck('classroom.name', 'id'))
+                            ->options(Classroom::all()->pluck('name', 'id'))
                             ->label('Class'),
                         Select::make('periodes_id')
                             ->searchable()
@@ -56,10 +58,14 @@ class StudentHasClassResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('students.name'),
-                TextColumn::make('homeroom.classroom.name'),
+                TextColumn::make('classrooms.name'),
+                TextColumn::make('periode.name'),
             ])
             ->filters([
-                //
+                SelectFilter::make('classrooms_id')
+                ->options(Classroom::all()->pluck('name', 'id')),
+                SelectFilter::make('periodes_id')
+                ->options(Periode::all()->pluck('name', 'id')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -74,7 +80,7 @@ class StudentHasClassResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ///
         ];
     }
 
