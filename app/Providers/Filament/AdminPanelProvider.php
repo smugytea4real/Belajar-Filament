@@ -2,8 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Tenancy\RegisterTeam;
 use App\Filament\Resources\ClassroomResource;
 use App\Filament\Resources\StudentHasClassResource;
+use App\Models\Team;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -79,65 +81,69 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
-            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
-                return $builder->groups([
-                    NavigationGroup::make()
-                        ->items([
-                            NavigationItem::make('Dashboard')
-                            ->icon('heroicon-o-home')
-                            ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
-                            ->url(fn (): string => Dashboard::getUrl()),
-                        ]),
-                    NavigationGroup::make('Academic')
-                        ->items([
-                            ...StudentResource::getNavigationItems(),
-                            ...TeacherResource::getNavigationItems(),
-                            ...StudentHasClassResource::getNavigationItems(),
-                            ...SubjectResource::getNavigationItems(),
-                        ]),
-                    NavigationGroup::make('Source')
-                        ->items([
-                            ...CategoryNilaiResource::getNavigationItems(),
-                            ...ClassroomResource::getNavigationItems(),
-                            ...DepartmentResource::getNavigationItems(),
-                        ]),
-                    NavigationGroup::make('Setting')
-                        ->items([
-                            ...PeriodeResource::getNavigationItems(),
-                            ...UserResource::getNavigationItems(),
-                            NavigationItem::make('Roles')
-                                ->icon('heroicon-o-shield-exclamation')
-                                ->isActiveWhen(fn (): bool => request()->routeIs([
-                                    'filament.admin.resources.roles.index',
-                                    'filament.admin.resources.roles.edit',
-                                    'filament.admin.resources.roles.create',
-                                    'filament.admin.resources.roles.view',
-                                ]))
-                                ->url(fn (): string => '/admin/roles'),
-                            NavigationItem::make('Permissions')
-                                ->icon('heroicon-o-lock-closed')
-                                ->isActiveWhen(fn (): bool => request()->routeIs([
-                                    'filament.admin.resources.permissions.index',
-                                    'filament.admin.resources.permissions.edit',
-                                    'filament.admin.resources.permissions.create',
-                                    'filament.admin.resources.permissions.view',
-                                ]))
-                                ->url(fn (): string => '/admin/permissions'),
-                        ]),
-                ]);
-            })
-            ->databaseNotifications();
-    }   
+            ->tenant(Team::class)
+            ->tenantRegistration(RegisterTeam::class);
+    }
+
+    //         ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
+    //             return $builder->groups([
+    //                 NavigationGroup::make()
+    //                     ->items([
+    //                         NavigationItem::make('Dashboard')
+    //                         ->icon('heroicon-o-home')
+    //                         ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
+    //                         ->url(fn (): string => Dashboard::getUrl()),
+    //                     ]),
+    //                 NavigationGroup::make('Academic')
+    //                     ->items([
+    //                         ...StudentResource::getNavigationItems(),
+    //                         ...TeacherResource::getNavigationItems(),
+    //                         ...StudentHasClassResource::getNavigationItems(),
+    //                         ...SubjectResource::getNavigationItems(),
+    //                     ]),
+    //                 NavigationGroup::make('Source')
+    //                     ->items([
+    //                         ...CategoryNilaiResource::getNavigationItems(),
+    //                         ...ClassroomResource::getNavigationItems(),
+    //                         ...DepartmentResource::getNavigationItems(),
+    //                     ]),
+    //                 NavigationGroup::make('Setting')
+    //                     ->items([
+    //                         ...PeriodeResource::getNavigationItems(),
+    //                         ...UserResource::getNavigationItems(),
+    //                         NavigationItem::make('Roles')
+    //                             ->icon('heroicon-o-shield-exclamation')
+    //                             ->isActiveWhen(fn (): bool => request()->routeIs([
+    //                                 'filament.admin.resources.roles.index',
+    //                                 'filament.admin.resources.roles.edit',
+    //                                 'filament.admin.resources.roles.create',
+    //                                 'filament.admin.resources.roles.view',
+    //                             ]))
+    //                             ->url(fn (): string => '/admin/roles'),
+    //                         NavigationItem::make('Permissions')
+    //                             ->icon('heroicon-o-lock-closed')
+    //                             ->isActiveWhen(fn (): bool => request()->routeIs([
+    //                                 'filament.admin.resources.permissions.index',
+    //                                 'filament.admin.resources.permissions.edit',
+    //                                 'filament.admin.resources.permissions.create',
+    //                                 'filament.admin.resources.permissions.view',
+    //                             ]))
+    //                             ->url(fn (): string => '/admin/permissions'),
+    //                     ]),
+    //             ]);
+    //         })
+    //         ->databaseNotifications();
+    
     
 
     public function boot(): void
     {
         Filament::serving(function (){
             Filament::registerUserMenuItems([
-                UserMenuItem::make()
-                    ->label('Setting')
-                    ->icon('heroicon-o-cog')
-                    ->url(PeriodeResource::getUrl()),
+                // UserMenuItem::make()
+                //     ->label('Setting')
+                //     ->icon('heroicon-o-cog')
+                //     ->url(PeriodeResource::getUrl()),
             ]);
         });
     }
