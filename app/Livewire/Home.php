@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use App\Models\Student;
 use Livewire\Component;
 use Filament\Forms\Form;
@@ -9,6 +10,7 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -76,6 +78,14 @@ class Home extends Component implements HasForms
         }
 
         Student::insert($data);
+
+        Notification::make()
+            ->success()
+            ->title('Murid '.$this->name. ' telah mendaftar')
+            ->sendToDatabase(User::whereHas('roles', function ($query) {
+                $query->where('name', 'admin');
+            })->get());
+
 
         session()->flash('message', 'Data has been saved!');
     }

@@ -123,8 +123,9 @@ class AdminPanelProvider extends PanelProvider
                                 ->url(fn (): string => '/admin/permissions'),
                         ]),
                 ]);
-            });
-    }
+            })
+            ->databaseNotifications();
+    }   
     
 
     public function boot(): void
