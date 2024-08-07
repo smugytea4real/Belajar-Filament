@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\NilaiResource\Pages;
 
 use App\Models\Nilai;
+use Closure;
 use Filament\Actions;
 use App\Models\Periode;
 use App\Models\Student;
@@ -76,6 +77,13 @@ class CreateNilai extends CreateRecord
                                 })
                                 ->label('Student'),
                             TextInput::make('nilai')
+                            ->rules([
+                                fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                    if ($get('nilai') > 100) {
+                                        $fail('Nilai tidak boleh melebihi 100');
+                                    }
+                                }
+                            ])
                         ])->columns(2)
                 ])
         ]);

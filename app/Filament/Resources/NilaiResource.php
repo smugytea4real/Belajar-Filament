@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Nilai;
 use App\Models\Periode;
 use App\Models\Student;
 use App\Models\Subject;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
 use App\Models\Classroom;
 use Filament\Tables\Table;
@@ -53,6 +55,16 @@ class NilaiResource extends Resource
                             ->label('Student')
                             ->options(Student::all()->pluck('name', 'id')),
                         TextInput::make('nilai')
+                            ->label('Nilai')
+                            ->type('number')
+                            ->live()
+                            ->rules([
+                                fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                    if ($get('nilai') > 100) {
+                                        $fail('Nilai tidak boleh melebihi 100');
+                                    }
+                                }
+                            ])
                     ])->columns(3)
             ]);
     }
