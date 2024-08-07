@@ -3,5 +3,7 @@
 return [
     App\Providers\AppServiceProvider::class,
     App\Providers\Filament\AdminPanelProvider::class,
-    Maatwebsite\Excel\ExcelServiceProvider::class
+    App\Providers\Filament\StudentPanelProvider::class,
+    App\Providers\Filament\TeacherPanelProvider::class,
+    Maatwebsite\Excel\ExcelServiceProvider::class,
 ];

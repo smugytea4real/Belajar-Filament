@@ -85,4 +85,15 @@ return [
 
     'livewire_loading_delay' => 'default',
 
+
+    'panels' => [
+        'admin' => [
+            'path' => env('FILAMENT_ADMIN_PATH', 'admin'),
+            'name' => 'Admin',
+        ],
+        'student' => [
+            'path' => env('FILAMENT_STUDENT_PATH', 'student'),
+            'name' => 'Student',
+        ],
+    ],
 ];
