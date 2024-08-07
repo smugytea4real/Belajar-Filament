@@ -3,34 +3,37 @@
 namespace App\Filament\Resources;
 
 use stdClass;
-use App\Filament\Resources\StudentResource\Pages;
-use App\Filament\Resources\StudentResource\RelationManagers;
-use App\Models\Student;
-use App\Models\StudentHasClass;
-use Filament\Actions\CreateAction;
 use Filament\Forms;
-use Filament\Forms\Components\Actions;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Infolists\Components;
-use Filament\Infolists\Components\Fieldset;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Pages\ListRecords\Tab;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Student;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Enums\ReligionStatus;
+use App\Models\StudentHasClass;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Actions\CreateAction;
+use Filament\Infolists\Components;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Actions;
 use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\Collection;
+use Filament\Resources\Pages\ListRecords\Tab;
+use App\Filament\Resources\StudentResource\Pages;
+use App\Filament\Resources\StudentResource\RelationManagers;
+
 
 
 class StudentResource extends Resource
@@ -62,14 +65,7 @@ class StudentResource extends Resource
                         DatePicker::make('birthday')
                             ->label('Birthday'),
                         Select::make('religion')
-                            ->options([
-                                'Islam' => 'Islam',
-                                'Kristen' => 'Kristen',
-                                'Katolik' => 'Katolik',
-                                'Hindu' => 'Hindu',
-                                'Budha' => 'Budha',
-                                'Konghucu' => 'Konghucu',
-                            ])
+                            ->options(ReligionStatus::class)
                             ->label('Religion'),
                         TextInput::make('contact'),
                         FileUpload::make('profile')
@@ -100,10 +96,8 @@ class StudentResource extends Resource
                 TextColumn::make('birthday')
                     ->label('Birthday')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('religion')
-                    ->label('Religion')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('contact'),
+                SelectColumn::make('religion')->options(ReligionStatus::class),
                 ImageColumn::make('profile'),
                 TextColumn::make('status')
                     ->toggleable(isToggledHiddenByDefault: true)
