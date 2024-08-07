@@ -7,6 +7,8 @@ use Filament\Actions;
 use App\Models\Periode;
 use App\Models\Student;
 use App\Models\Subject;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Classroom;
 use App\Models\CategoryNilai;
@@ -33,11 +35,19 @@ class CreateNilai extends CreateRecord
                         ->schema([
                             Select::make('classrooms')
                                 ->options(Classroom::all()->pluck('name', 'id'))
-                                ->label('Class'),
+                                ->label('Class')
+                                ->live()
+                                ->afterStateUpdated(function (Set $set){
+                                    $set('student', null);
+                                    $set('periode', null);
+                                }),
                             Select::make('periode')
                                 ->options(Periode::all()->pluck('name', 'id'))
                                 ->label('Periode')
-                                ->searchable(),
+                                ->searchable()
+                                ->live()
+                                ->preload()
+                                ->afterStateUpdated(fn(Set $set) => $set('student', null)),
                             Select::make('subject_id')
                                 ->label('Subject')
                                 ->searchable()
@@ -51,9 +61,19 @@ class CreateNilai extends CreateRecord
 
                     Repeater::make('nilaistudents')
                         ->label('Grade')
-                        ->schema([
+                        ->schema(fn(Get $get): array => [
                             Select::make('student')
-                                ->options(Student::all()->pluck('name', 'id'))
+                                ->options(function () use ($get) {
+                                    $data = Student::whereIn('id', function ($query) use ($get){
+                                        $query->select('students_id')
+                                            ->from('student_has_classes')
+                                            ->where('classrooms_id', $get('classrooms'))
+                                            ->where('periodes_id', $get('periode'))
+                                            ->where('is_open', true)->pluck('students_id');
+                                    })
+                                    ->pluck('name', 'id');
+                                    return $data;
+                                })
                                 ->label('Student'),
                             TextInput::make('nilai')
                         ])->columns(2)
