@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use App\Models\Adjacency;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Contracts\View\View;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,6 +48,10 @@ class AdjacencyResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('detail')
+                    ->modalContent(fn(Adjacency $record): View =>  view('filament.pages.actions.adjacency',
+                    ['record' =>$record]))
+                    ->modalSubmitAction(false),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
