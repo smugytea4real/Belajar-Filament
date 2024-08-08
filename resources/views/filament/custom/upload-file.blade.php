@@ -5,7 +5,7 @@
     ]" />
 
     <div class="flex justify-between mt-1">
-        <div class="font-bold text-3xl">Students</div>
+        <h1 class="font-bold text-3xl">Students</h1>
         <div>
             {{ $data }}
         </div>

@@ -12,6 +12,7 @@ use App\Models\Subject;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
 use App\Models\Classroom;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use App\Models\CategoryNilai;
 use Filament\Resources\Resource;
@@ -80,7 +81,8 @@ class NilaiResource extends Resource
                 TextColumn::make('periode.name'),
             ])
             ->filters([
-                //
+                SelectFilter::make('category_nilai_id')
+                    ->options(CategoryNilai::pluck('name', 'id')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

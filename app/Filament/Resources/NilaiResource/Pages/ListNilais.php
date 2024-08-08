@@ -12,7 +12,11 @@ class ListNilais extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        // $queryString = request()->getQueryString();
+        $decodeQueryString = urldecode(request()->getQueryString());
         return [
+            Actions\Action::make('export')
+                ->url(url('/export?'.$decodeQueryString)),
             Actions\CreateAction::make(),
         ];
     }
