@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ClassroomResource\RelationManagers\SubjectsRelationManager;
 use stdClass;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Set;
 use Filament\Forms\Form;
-use App\Models\ClassRoom;
+use App\Models\Classroom;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
@@ -19,10 +18,11 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ClassroomResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ClassroomResource\RelationManagers;
+use App\Filament\Resources\ClassroomResource\RelationManagers\SubjectsRelationManager;
 
 class ClassroomResource extends Resource
 {
-    protected static ?string $model = ClassRoom::class;
+    protected static ?string $model = Classroom::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -30,12 +30,6 @@ class ClassroomResource extends Resource
 
     protected static ?int $navigationSort= 32;
 
-    public static function shouldRegisterNavigation(): bool{
-        if(auth()->user()->can('classroom'))
-            return true;
-        else
-            return false;
-    }
 
     public static function form(Form $form): Form
     {
