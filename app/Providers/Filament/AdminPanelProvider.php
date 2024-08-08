@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\Register;
 use App\Filament\Pages\Tenancy\RegisterTeam;
 use App\Filament\Resources\ClassroomResource;
 use App\Filament\Resources\StudentHasClassResource;
@@ -47,6 +48,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->registration(Register::class)
              ->colors([
             'danger' => Color::Rose,
             'gray' => Color::Gray,
