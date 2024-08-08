@@ -2,17 +2,16 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Auth\Register;
-use App\Filament\Pages\Tenancy\RegisterTeam;
-use App\Filament\Resources\ClassroomResource;
-use App\Filament\Resources\StudentHasClassResource;
-use App\Models\Team;
+
 use Filament\Pages;
 use Filament\Panel;
+use App\Models\Team;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use App\Filament\Auth\Login;
 use Filament\Pages\Dashboard;
 use Filament\Facades\Filament;
+use App\Filament\Auth\Register;
 use Filament\Support\Colors\Color;
 use SebastianBergmann\Type\VoidType;
 use Filament\Navigation\UserMenuItem;
@@ -25,10 +24,13 @@ use App\Filament\Resources\PeriodeResource;
 use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\SubjectResource;
 use App\Filament\Resources\TeacherResource;
+use App\Filament\Pages\Tenancy\RegisterTeam;
+use App\Filament\Resources\ClassroomResource;
 use App\Filament\Resources\DepartmentResource;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use App\Filament\Resources\CategoryNilaiResource;
+use App\Filament\Resources\StudentHasClassResource;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -47,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop(true)
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(Login::class)
             ->registration(Register::class)
              ->colors([
             'danger' => Color::Rose,
