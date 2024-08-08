@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Filament\Panel;
 use App\Models\Team;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,25 +16,10 @@ class Student extends Model
 
     protected $guarded = [];
 
-
-    public function teams(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(Team::class);
-    }
- 
-    public function getTenants(Panel $panel): Collection
-    {
-        return $this->teams;
-    }
- 
-    public function canAccessTenant(Model $tenant): bool
-    {
-        return $this->teams()->whereKey($tenant)->exists();
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function team()
-    {
-        return $this->belongsToMany(Team::class);
-    }
 }
 
