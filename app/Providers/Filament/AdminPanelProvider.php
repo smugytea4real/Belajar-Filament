@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 
+use App\Filament\Resources\StudentResource\Widgets\StatsOverview;
 use Filament\Pages;
 use Filament\Panel;
 use App\Models\Team;
@@ -62,11 +63,12 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
+                StatsOverview::class
                 
             ])
             ->middleware([
