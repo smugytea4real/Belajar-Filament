@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\NilaiResource\Pages;
 
-use App\Models\Nilai;
 use Closure;
+use App\Models\Nilai;
 use Filament\Actions;
 use App\Models\Periode;
 use App\Models\Student;
@@ -13,6 +13,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Classroom;
 use App\Models\CategoryNilai;
+use Awcodes\TableRepeater\Header;
 use Filament\Forms\Components\Card;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
@@ -20,6 +21,8 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use App\Filament\Resources\NilaiResource;
 use Filament\Resources\Pages\CreateRecord;
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
+
 
 class CreateNilai extends CreateRecord
 {
@@ -59,6 +62,33 @@ class CreateNilai extends CreateRecord
                                 ->options(CategoryNilai::all()->pluck('name', 'id'))
                                 ->columnSpan(3),
                         ])->columns(3),
+
+                //    TableRepeater::make('nilaistudents')
+                //         ->schema(fn (Get $get): array => [
+                //             Select::make('student')
+                //                 ->hiddenLabel()
+                //                 ->options(function () use ($get) {
+                //                     $data = Student::whereIn('id', function ($query) use ($get){
+                //                         $query->select('students_id')
+                //                             ->from('student_has_classes')
+                //                             ->where('classrooms_id', $get('classrooms'))
+                //                             ->where('periodes_id', $get('periode'))
+                //                             ->where('is_open', true)->pluck('students_id');
+                //                     })
+                //                     ->pluck('name', 'id');
+                //                     return $data;
+                //                 }),
+
+                //             TextInput::make('nilai')
+                //             ->hiddenLabel()
+                //             ->rules([
+                //                 fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                //                     if ($get('nilai') > 100) {
+                //                         $fail('Nilai tidak boleh melebihi 100');
+                //                     }
+                //                 },
+                //             ])
+                //         ])->columnSpan('full'),
 
                     Repeater::make('nilaistudents')
                         ->label('Grade')
