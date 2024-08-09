@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 
-use App\Filament\Resources\StudentResource\Widgets\StatsOverview;
 use Filament\Pages;
 use Filament\Panel;
 use App\Models\Team;
@@ -19,6 +18,7 @@ use Filament\Navigation\UserMenuItem;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationGroup;
+use Rupadana\ApiService\ApiServicePlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Navigation\NavigationBuilder;
 use App\Filament\Resources\PeriodeResource;
@@ -39,6 +39,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use App\Filament\Resources\StudentResource\Widgets\StatsOverview;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -87,7 +88,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->plugins([
-                FilamentSpatieRolesPermissionsPlugin::make()
+                FilamentSpatieRolesPermissionsPlugin::make(),
+                ApiServicePlugin::make(),
                 // \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
             ])
             // ->tenant(Team::class)

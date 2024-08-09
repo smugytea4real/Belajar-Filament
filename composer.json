@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
+        "rupadana/filament-api-service": "^3.2",
         "saade/filament-adjacency-list": "^3.2",
         "spatie/laravel-permission": "^6.9"
     },

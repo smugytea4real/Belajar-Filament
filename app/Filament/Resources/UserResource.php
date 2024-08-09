@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+
+use App\Filament\Resources\UserResource\Api\Transformers\UserTransformer;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
@@ -84,6 +86,10 @@ class UserResource extends Resource
         ];
     }
 
+    public static function getApiTransformer()
+    {
+        return UserTransformer::class;
+    }
     // public static function getEloquentQuery(): Builder
     // {
     //     $admins = User::whereHas('roles', function ($query) {
