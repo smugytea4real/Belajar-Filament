@@ -210,7 +210,7 @@ class StudentResource extends Resource
                                                     'wait' => 'gray'
                                                 }),
                                                 Components\ViewEntry::make('QRCode')
-                                                ->views('filament.resources.students.qrcode'),
+                                                ->view('filament.resources.students.qrcode'),
                                             ])
                                             ->inlineLabel()
                                             ->columns(1),

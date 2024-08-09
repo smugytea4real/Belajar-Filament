@@ -14,6 +14,7 @@ use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Illuminate\Contracts\View\View;
 
 class Home extends Component implements HasForms
 {
@@ -28,39 +29,43 @@ class Home extends Component implements HasForms
     public $profile;
 
     public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Card::make()
-                    ->schema([
-                        TextInput::make('name')
-                            ->label('Name Student')
-                            ->required(),
-                        Select::make('gender')
-                            ->options([
-                                "Male" => "Male",
-                                "Female" => "Female",
-                            ]),
-                        DatePicker::make('birthday')
-                            ->label('Birthday'),
-                        Select::make('religion')
-                            ->options([
-                                'Islam' => 'Islam',
-                                'Kristen' => 'Kristen',
-                                'Katolik' => 'Katolik',
-                                'Hindu' => 'Hindu',
-                                'Budha' => 'Budha',
-                                'Konghucu' => 'Konghucu',
-                            ])
-                            ->label('Religion'),
-                        TextInput::make('contact'),
-                        TextInput::make('profile')
-                            ->type('file')
-                            ->extraAttributes(['class' => 'rounded'])
-                    ])
-            ]);
-    }
-    public function render()
+{
+    return $form
+        ->schema([
+            Card::make()
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Name Student')
+                        ->required()
+                        ->extraAttributes(['class' => 'text-black']),
+                    Select::make('gender')
+                        ->options([
+                            "Male" => "Male",
+                            "Female" => "Female",
+                        ]),
+                    DatePicker::make('birthday')
+                        ->label('Birthday')
+                        ->extraAttributes(['class' => 'text-black']),
+                    Select::make('religion')
+                        ->options([
+                            'Islam' => 'Islam',
+                            'Kristen' => 'Kristen',
+                            'Katolik' => 'Katolik',
+                            'Hindu' => 'Hindu',
+                            'Budha' => 'Budha',
+                            'Konghucu' => 'Konghucu',
+                        ])
+                        ->label('Religion')
+                        ->extraAttributes(['class' => 'text-black']),
+                    TextInput::make('contact'),
+                    TextInput::make('profile')
+                        ->type('file')
+                        ->extraAttributes(['class' => 'rounded'])
+                ])
+        ]);
+}
+
+    public function render(): View
     {
         return view('livewire.home');
     }
@@ -79,16 +84,17 @@ class Home extends Component implements HasForms
 
         Student::insert($data);
 
-        Notification::make()
-            ->success()
-            ->title('Murid '.$this->name. ' telah mendaftar')
-            ->sendToDatabase(User::whereHas('roles', function ($query) {
-                $query->where('name', 'admin');
-            })->get());
+        $admins = User::whereHas('roles', function ($query) {
+            $query->where('name', 'admin');
+        })->get();
 
+    Notification::make()
+        ->success()
+        ->title('Murid ' . $this->name . ' telah mendaftar')
+        ->sendToDatabase($admins);
 
-        session()->flash('message', 'Data has been saved!');
-    }
+    session()->flash('message', 'Data has been saved!');
+}
 
     public function delSession(): void
     {

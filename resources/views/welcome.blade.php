@@ -6,6 +6,8 @@
   @vite('resources/css/app.css')
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
 </head>
 <body>
   <div class="bg-[url('https://cdn.pixabay.com/photo/2016/11/14/03/16/book-1822474_1280.jpg')] bg-center bg-cover h-screen">
