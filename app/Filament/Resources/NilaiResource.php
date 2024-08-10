@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Closure;
+use stdClass;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Nilai;
@@ -12,14 +13,15 @@ use App\Models\Subject;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
 use App\Models\Classroom;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use App\Models\CategoryNilai;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\NilaiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -74,6 +76,16 @@ class NilaiResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 TextColumn::make('student.name'),
                 TextColumn::make('subject.name'),
                 TextColumn::make('category_nilai.name'),
@@ -82,7 +94,11 @@ class NilaiResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('category_nilai_id')
-                    ->options(CategoryNilai::pluck('name', 'id')),
+                    ->options(CategoryNilai::pluck('name', 'id'))
+                    ->label('Category Nilai'),
+                SelectFilter::make('class_id')
+                    ->options(Classroom::pluck('name', 'id'))
+                    ->label('Class'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

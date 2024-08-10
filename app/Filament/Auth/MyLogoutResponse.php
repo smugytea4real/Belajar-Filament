@@ -11,8 +11,6 @@ class MyLogoutResponse implements Responsable
 
     public function toResponse($request)
     {
-        return redirect()->to(
-            route ('welcome'),
-        );
+        return redirect()->route('welcome');
     }
 }

@@ -84,14 +84,12 @@ class Home extends Component implements HasForms
 
         Student::insert($data);
 
-        $admins = User::whereHas('roles', function ($query) {
-            $query->where('name', 'admin');
-        })->get();
-
-    Notification::make()
-        ->success()
-        ->title('Murid ' . $this->name . ' telah mendaftar')
-        ->sendToDatabase($admins);
+        Notification::make()
+            ->success()
+            ->title('Murrid ' . $this->name . ' Telah Mendaftar')
+            ->sendToDatabase(User::whereHas('roles', function ($query) {
+                $query->where('name', 'admin');
+            })->get());
 
     session()->flash('message', 'Data has been saved!');
 }

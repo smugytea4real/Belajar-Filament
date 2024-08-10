@@ -13,7 +13,7 @@
   <div class="bg-[url('https://cdn.pixabay.com/photo/2016/11/14/03/16/book-1822474_1280.jpg')] bg-center bg-cover h-screen">
         <div class='md:flex md:justify-between py-4 px-10'>
             <div class="md:ml-8 ml-0 flex justify-between items-center">
-              <div class='text-2xl font-bold text-white py-2'>
+              <div class='text-2xl font-bold text-white py-2' id="schoolElement">
                   School
               </div>
               <span class="text-3xl cursor-pointer mx-2 md:hidden block">
@@ -87,6 +87,10 @@
                 }
         });
     });
+
+     document.getElementById("schoolElement").addEventListener("click", function() {
+            window.location.href = "http://127.0.0.1:8000/admin";
+        });
   </script>
 </body>
 </html>

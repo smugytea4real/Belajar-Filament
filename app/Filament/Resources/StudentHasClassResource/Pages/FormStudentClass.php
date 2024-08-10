@@ -41,7 +41,7 @@ class FormStudentClass extends Page implements HasForms
                             ->options(Student::all()->pluck('name', 'id'))
                             ->columnSpan(3)
                             ->label('Student Name'),
-                        Select::make('classrooms_id')
+                        Select::make('classrooms')
                             ->searchable()
                             ->options(Classroom::all()->pluck('name', 'id'))
                             ->label('Class'),
@@ -55,6 +55,7 @@ class FormStudentClass extends Page implements HasForms
 
     public function save()
     {
+        
         $students = $this->students;
         $insert = [];
 

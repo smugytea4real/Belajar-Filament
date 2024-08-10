@@ -12,7 +12,7 @@ enum ReligionStatus: string implements HasLabel
     case Hindu = 'Hindu';
     case Buddha = 'Buddha';
     case Khonghucu = 'Khonghucu';
-    case Update = 'Update';
+    case Null = '-';
     
     public function getLabel(): ?string
     {
@@ -23,7 +23,7 @@ enum ReligionStatus: string implements HasLabel
             self::Hindu => 'Hindu',
             self::Buddha => 'Buddha',
             self::Khonghucu => 'Khonghucu',
-            self::Update => 'Update',
+            self::Null => '-',
         };
     }
 }

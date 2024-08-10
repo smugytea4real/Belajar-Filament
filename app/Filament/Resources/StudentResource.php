@@ -89,7 +89,8 @@ class StudentResource extends Resource
                     }
                 ),
                 TextColumn::make('nis')
-                    ->label('NIS'),
+                    ->label('NIS')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('name')
                     ->label('Name Student'),
                 TextColumn::make('gender'),
@@ -98,7 +99,8 @@ class StudentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('contact'),
                 SelectColumn::make('religion')->options(ReligionStatus::class),
-                ImageColumn::make('profile'),
+                ImageColumn::make('profile')
+                    ->circular(),
                 TextColumn::make('status')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->formatStateUsing(fn (string $state): string => ucwords("{$state}"))
